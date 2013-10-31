@@ -6,7 +6,10 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from polls.models import Choice
+from polls.models import Choice, Poll
+import datetime
+from django.utils import timezone
+
 
 class SimpleTest(TestCase):
     def test_basic_addition(self):
@@ -15,7 +18,22 @@ class SimpleTest(TestCase):
         """
         self.assertEqual(1 + 1, 2)
 
+
+class PollsMethodTest(TestCase):
+    def test_poll_was_published_recently(self):
+        poll = Poll(pub_date=(timezone.now() - datetime.timedelta(days=1)))
+        self.assertEqual(poll.was_published_recently(), False)
+
+
 class ChoiceMethodTest(TestCase):
-	def test_choice_negative(self):
-		choice = Choice(votes=1)
-		self.assertEqual(choice.votes > 0, True)
+    def test_choice_positive(self):
+        choice = Choice(votes=1)
+        self.assertEqual(choice.votes > 0, True)
+
+    def test_choice_negative(self):
+        choice = Choice(votes=-1)
+        self.assertEqual(choice.votes < 0, True)
+
+    def test_choice_positive_and_return_false(self):
+        choice = Choice(votes=1)
+        self.assertEqual(choice.votes < 0, False)
