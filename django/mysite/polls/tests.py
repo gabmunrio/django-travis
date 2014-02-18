@@ -28,7 +28,7 @@ class PollsMethodTest(TestCase):
         self.assertEqual(poll.was_published_recently(), False)
 
 
-@skipIf(os.environ['INTERFACE'] == 1, 'We need to check the phantomjs execution')
+@skipIf(os.environ['INTERFACE'] == "1", 'We need to check the phantomjs execution')
 class ChoiceMethodTest(TestCase):
     def test_choice_positive(self):
         choice = Choice(votes=1)
